@@ -1,0 +1,146 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import "theme/root";
+@import "theme/functions";
+
+*:focus {
+  outline: none !important;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+#root {
+  margin: 0 auto;
+  text-align: center;
+  width: 100%;
+}
+
+input[type=date]::-webkit-datetime-edit-text {
+  -webkit-appearance: none;
+  display: none;
+}
+input[type=date]::-webkit-datetime-edit-month-field{
+  -webkit-appearance: none;
+  display: none;
+}
+input[type=date]::-webkit-datetime-edit-day-field {
+  -webkit-appearance: none;
+  display: none;
+}
+input[type=date]::-webkit-datetime-edit-year-field {
+  -webkit-appearance: none;
+  display: none;
+}
+
+.text--red{
+  color: $red !important;
+}
+
+/*------------------
+        Card
+--------------------*/
+
+.card {
+  box-shadow: $shadows-gray-blue-30-5-10b;
+  border-radius: 12px;
+  overflow: hidden;
+
+  &__container {
+
+  }
+
+  &__header {
+    height: 90px;
+    padding: 0 28px;
+    background-color: $gray-blue-99;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid $gray-blue-96;
+
+    &--transparent {
+      background-color: transparent;
+    }
+
+    &-item {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    &-item--left {
+      justify-content: flex-start;
+      flex-wrap: nowrap;
+
+    }
+
+    &-item--center {
+      justify-content: center;
+    }
+
+    &-item--right {
+      justify-content: flex-end;
+
+    }
+
+    &-title {
+      color: $secondary-text;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 30px
+    }
+
+    &-icon {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      background-color: white;
+      color: $gray-blue-85;
+      border-radius: 5px;
+    }
+  }
+
+  &__submit-btn {
+    border-radius: 20px !important;
+    box-shadow: $shadows-purple-15-30b !important;
+  }
+
+  &__body {
+    padding: 32px;
+    background-color: #fff;
+  }
+}
+
+/*------------------
+        Paper
+--------------------*/
+.paper {
+  padding: 40px;
+  background-color: $gray-blue-99;
+  border-radius: 12px;
+  &__header {
+    margin-bottom: 20px;
+    &-title {
+      font-weight: 700;
+      text-align: left;
+      color: $gray-blue-60;
+    }
+  }
+
+  &__body{
+
+  }
+}
+
+/*------------------
+        Modal
+--------------------*/
+.model{
+  background-color: $gray-blue-99;
+
+}
+
+

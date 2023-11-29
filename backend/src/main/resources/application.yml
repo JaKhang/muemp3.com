@@ -1,0 +1,56 @@
+spring:
+    datasource:
+        password: mysql
+        url: jdbc:mysql://localhost:3306/mue_mp3_database?useSSL=false&allowPublicKeyRetrieval=true
+        username: root
+    jpa:
+        database-platform: org.hibernate.dialect.MySQLDialect
+        hibernate:
+            ddl-auto: none
+        sql-format: true
+        show-sql: true
+    security:
+        oauth2:
+            client:
+                registration:
+                    google:
+                        client-id: 311235905390-4drkukl7kdn1o2ic762e0b2urg0mga0m.apps.googleusercontent.com
+                        client-secret: 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
+                        redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
+                        scope:
+                            - email
+                            - profile
+                    facebook:
+                        clientId: 981226833189222
+                        clientSecret: 4a84972c2615106d91cde2ccb2148cf0
+                        redirectUri: "{baseUrl}/oauth2/callback/{registrationId}" # Note that facebook now mandates the use of https redirect URIs, so make sure your app supports https in production
+                        scope:
+                            - email
+                            - public_profile
+#storage config
+storage:
+    default-type: GOOGLE_DRIVE
+    google-drive:
+        root: muemp3.com
+        application-name: Mue Mp3
+        credential-file-path: /keys/credentials.json
+        token-directory-path: tokens
+    local:
+        root: D:\Workspace\full-stack\mue-mp3\storage
+auth:
+    jwt:
+        expired-time: 24
+        secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+    oauth2:
+        success-redirect-uris: http://localhost:3000/oauth2/redirect
+        failed-redirect-uris:  http://localhost:3000/oauth2/redirect
+
+web:
+    cors:
+        allowed-origins:
+            - http://localhost:3000
+
+url-pattern:
+    confirmation-url: ""
+    google-audio-streaming: ""
+    google-image: ""

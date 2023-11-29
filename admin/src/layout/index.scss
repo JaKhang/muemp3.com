@@ -1,0 +1,17 @@
+@import "src/theme/root";
+@import "src/theme/functions";
+.app{
+  display: grid;
+  grid-template-areas: 'sidenav navbar' 'sidenav main-content';
+  height: 100vh;
+  width: 100%;
+  grid-template-columns: min-content 1fr;
+  grid-template-rows: min-content 1fr;
+  background-color: $primary-background;
+
+  &__content{
+    grid-area: main-content;
+    padding: 32px;
+    overflow: auto;
+  }
+}
