@@ -6,6 +6,7 @@ import com.google.api.services.drive.model.File;
 import com.ja.muemp3.payload.response.GoogleDriveFileResponse;
 import com.ja.muemp3.utils.ConvertByteToMB;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -70,6 +71,11 @@ public class GoogleDriveFileService implements GoogleDriveFile {
         } catch (IOException | GeneralSecurityException e) {
             throw new StorageFileNotFoundException();
         }
+    }
+
+    @Override
+    public Resource loadAsResource(String resource) {
+        return null;
     }
 
     @Override

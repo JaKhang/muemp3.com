@@ -36,7 +36,7 @@ storage:
         credential-file-path: /keys/credentials.json
         token-directory-path: tokens
     local:
-        root: D:\Workspace\full-stack\mue-mp3\storage
+        root: D:\Workspace\full-stack\storage
 auth:
     jwt:
         expired-time: 24
@@ -48,7 +48,7 @@ auth:
 web:
     cors:
         allowed-origins:
-            - http://localhost:3000
+            - http://localhost
 
 url-pattern:
     confirmation-url: ""

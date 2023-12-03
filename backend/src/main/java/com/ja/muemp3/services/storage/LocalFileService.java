@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 public interface LocalFileService {
     Stream<Path> loadAll();
 
-    Resource loadAsResource(String subSub, String filename);
+    Resource loadAsResource(String path);
 
     Path load(String subPath, String filename);
 

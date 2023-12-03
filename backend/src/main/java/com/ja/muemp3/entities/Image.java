@@ -7,6 +7,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
 @Getter
 @Setter
 @SuperBuilder
+@ToString
 public class Image extends FileDetails {
 
     private String link;

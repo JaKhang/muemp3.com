@@ -19,7 +19,7 @@ public class LinkFactory {
         if(Objects.equals(image.getStorageType(), StorageType.GOOGLE_DRIVE)){
             return image.getLink() + "=s" + thumbnailSize.size;
         } else {
-            return image.getLink();
+            return "http://localhost:8080/images/" + image.getId() + "?s="  + (thumbnailSize == ThumbnailSize.LARGE ? "" : thumbnailSize.size);
         }
 
     }

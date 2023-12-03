@@ -14,4 +14,6 @@ public interface LocalStorageService{
     Resource load(String path);
     boolean deleted(String path);
     Stream<Path> listFile(String path) throws IOException;
+
+    Resource loadAsResource(String resource);
 }

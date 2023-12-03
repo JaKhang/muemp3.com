@@ -1,22 +1,23 @@
 package com.ja.muemp3.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
 import java.util.UUID;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "ArtistRoles")
-public class ArtistRole {
+@Table(name = "artist_type")
+@AllArgsConstructor
+@NoArgsConstructor
+public class ArtistType {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String name;
 
-//    @ManyToMany(mappedBy = "roles")
-//    private List<Artist> artists;
 }

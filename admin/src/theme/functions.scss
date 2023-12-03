@@ -1,9 +1,0 @@
-@import "./root";
-
-@function px-to-rem($px){
-  @return 0rem + calc($px / $base-px) ;
-}
-
-@function spacing($number){
-  @return $base-space * $number;
-}

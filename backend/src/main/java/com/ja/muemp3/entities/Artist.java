@@ -13,8 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(
-        name = "Artists")
+@Table(name = "Artists")
 public class Artist extends Auditable{
 
     /*------------------
@@ -34,7 +33,7 @@ public class Artist extends Auditable{
     private Boolean isOfficial;
 
     @Column
-    private Boolean isBand;
+    private Boolean isIndie;
 
 
     @Column(columnDefinition = "TEXT")
@@ -64,11 +63,11 @@ public class Artist extends Auditable{
     --------------------*/
     @ManyToMany
     @JoinTable(
-            name = "artists_roles",
+            name = "artists_types",
             joinColumns = @JoinColumn(name = "artist_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
+            inverseJoinColumns = @JoinColumn(name = "type_id")
     )
-    private List<ArtistRole> roles;
+    private List<ArtistType> types;
 
     @ManyToMany
     @JoinTable(
@@ -80,6 +79,7 @@ public class Artist extends Auditable{
 
     @ManyToMany(mappedBy = "artists")
     private List<Song> singedSongs;
+
 
     /*------------------
             OTM

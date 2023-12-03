@@ -1,36 +1,41 @@
-package com.ja.muemp3.api.v1;
+package com.ja.muemp3.controller.v1;
 
-import com.ja.muemp3.annotations.JsonArg;
+
+import com.ja.muemp3.payload.artist.ArtistTypeResponse;
 import com.ja.muemp3.services.storage.GoogleDriveFile;
 import com.ja.muemp3.payload.artist.ArtistResponse;
 import com.ja.muemp3.payload.artist.ArtistRequest;
 import com.ja.muemp3.payload.response.ApiResponse;
 import com.ja.muemp3.services.ArtistService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.io.IOException;
+
 import java.net.URI;
-import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/artists")
 @RequiredArgsConstructor
-public class ArtistApi {
+public class ArtistRestController {
 
     private final ArtistService artistService;
 
     private final GoogleDriveFile googleDriveFile;
 
     @GetMapping("")
-    public ResponseEntity<ApiResponse<?>> findAll() throws GeneralSecurityException, IOException {
+    public ResponseEntity<ApiResponse<?>> findAll() {
         List<ArtistResponse> data = artistService.findAll();
+        return ResponseEntity.ok(ApiResponse.ok(data));
+    }
+
+    @GetMapping("/types")
+    public ResponseEntity<ApiResponse<?>> findAllType(){
+        List<ArtistTypeResponse> data = artistService.findAllType();
         return ResponseEntity.ok(ApiResponse.ok(data));
     }
     
@@ -43,14 +48,6 @@ public class ArtistApi {
     @PostMapping(value = "/include-image")
     public ResponseEntity<ApiResponse<?>> createWithImage(@RequestPart("info") ArtistRequest artistRequest, @RequestPart("thumbnail") MultipartFile thumbnail){
         ArtistResponse artistResponse = artistService.saveWithImage(artistRequest, thumbnail);
-        return created(artistResponse);
-    }
-
-    @PostMapping("/include-image-link")
-    public ResponseEntity<ApiResponse<?>> createWithImageLink(@JsonArg("link") String link, @JsonArg("info") ArtistRequest info){
-        System.out.println(link);
-        System.out.println(info);
-        ArtistResponse artistResponse = artistService.saveWithImageLink(info, link);
         return created(artistResponse);
     }
 

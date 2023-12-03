@@ -1,21 +1,23 @@
 package com.ja.muemp3.services.v1;
 
 import com.ja.muemp3.entities.Artist;
-import com.ja.muemp3.entities.ArtistRole;
+import com.ja.muemp3.entities.ArtistType;
 import com.ja.muemp3.entities.Image;
 import com.ja.muemp3.entities.constants.StorageType;
 import com.ja.muemp3.entities.constants.ThumbnailSize;
+import com.ja.muemp3.exception.ResourceNotFoundException;
 import com.ja.muemp3.factories.LinkFactory;
 import com.ja.muemp3.payload.artist.ArtistRequest;
 import com.ja.muemp3.payload.artist.ArtistResponse;
+import com.ja.muemp3.payload.artist.ArtistTypeResponse;
 import com.ja.muemp3.repositories.ArtistRepository;
-import com.ja.muemp3.repositories.ArtistRoleRepository;
+import com.ja.muemp3.repositories.ArtistTypeRepository;
 import com.ja.muemp3.services.ArtistService;
 import com.ja.muemp3.services.ImageService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -29,68 +31,78 @@ public class DefaultArtistService implements ArtistService {
     private final ModelMapper mapper;
     private final ArtistRepository artistRepository;
     private final LinkFactory linkFactory;
-    private final ArtistRoleRepository artistRoleRepository;
+    private final ArtistTypeRepository artistTypeRepository;
+
+    private static final String IMAGE_DIR = "artist";
 
     @Override
     public List<ArtistResponse> findAll() {
-        return artistRepository.findAll().stream().map(this::convert).toList();
+        return artistRepository.findAll().stream().map(this::convertToLine).toList();
     }
 
     @Override
     public ArtistResponse save(ArtistRequest artistRequest) {
-        Image thumbnail = imageService.findByIdElseNull(artistRequest.getThumbnailId());
-        var roles = artistRoleRepository.findAllById(artistRequest.getRoleIds());
-        Artist artist = Artist
-                .builder()
-                .roles(roles)
-                .alias(artistRequest.getAlias())
-                .isBand(artistRequest.getIsBand())
-                .birthday(artistRequest.getBirthday())
-                .name(artistRequest.getName())
-                .description(artistRequest.getDescription())
-                .thumbnail(thumbnail)
-                .isOfficial(artistRequest.getIsOfficial())
-                .build();
-
-
+        System.out.println(artistRequest);
+        Artist artist = convertToEntity(artistRequest);
         artist = artistRepository.saveAndFlush(artist);
-
-        return convert(artist);
+        return convertToLine(artist);
     }
 
     @Override
+    @Transactional
     public ArtistResponse saveWithImage(ArtistRequest artistRequest, MultipartFile thumbnail) {
-        UUID imageId = imageService.uploadImage(thumbnail, StorageType.GOOGLE_DRIVE, "/artist");
+        UUID imageId = imageService.uploadImage(thumbnail, StorageType.LOCAL, IMAGE_DIR);
         artistRequest.setThumbnailId(imageId);
         return save(artistRequest);
     }
 
     @Override
-    public ArtistResponse saveWithImageLink(ArtistRequest artistRequest, String link) {
-        UUID imageId = imageService.uploadImageWithLink(link, null, "/artist");
-        artistRequest.setThumbnailId(imageId);
-        return save(artistRequest);
-    }
+    public ArtistResponse update(UUID id, ArtistRequest r) {
+        Artist artist = findByIdElseThrow(id);
 
-    @Override
-    public ArtistResponse update(UUID id, ArtistRequest artistRequest) {
-        return null;
+        Image thumbnail = imageService.findByIdElseNull(r.getThumbnailId());
+        List<ArtistType> artistTypes = artistTypeRepository.findAllById(r.getTypeIds());
+
+        artist.setName(r.getName());
+        artist.setAlias(r.getAlias());
+        artist.setBirthday(r.getBirthday());
+        artist.setDescription(r.getDescription());
+        artist.setIsIndie(r.getIsIndie());
+        artist.setIsOfficial(r.getIsOfficial());
+        artist.setThumbnail(thumbnail);
+        artist.setTypes(artistTypes);
+        artist = artistRepository.save(artist);
+
+        return convertToLine(artist);
     }
 
     @Override
     public ArtistResponse updateThumbnail(UUID id, MultipartFile thumbnail) {
-        return null;
+        UUID thumbId = imageService.uploadImage(thumbnail, null, IMAGE_DIR);
+        Image image = imageService.findByIdElseNull(id);
+        Artist artist = findByIdElseThrow(id);
+        artist.setThumbnail(image);
+        artist = artistRepository.save(artist);
+        return convertToLine(artist);
     }
 
     @Override
     public ArtistResponse delete(UUID id) {
-        return null;
+        Artist artist = findByIdElseThrow(id);
+        artist.setDeleted(true);
+        return convertToLine(artist);
     }
+
+    @Override
+    public List<ArtistTypeResponse> findAllType() {
+        return artistTypeRepository.findAll().stream().map(artistType -> mapper.map(artistType, ArtistTypeResponse.class)).toList();
+    }
+
 
     /*------------------
           Private
     --------------------*/
-    private ArtistResponse convert(Artist artist){
+    private ArtistResponse convertToLine(Artist artist){
         return ArtistResponse.builder()
                 .id(artist.getId())
                 .alias(artist.getAlias())
@@ -101,5 +113,27 @@ public class DefaultArtistService implements ArtistService {
                 .thumbnailMD(linkFactory.createThumbnailLink(artist.getThumbnail(), ThumbnailSize.MEDIUM))
                 .thumbnailLG(linkFactory.createThumbnailLink(artist.getThumbnail(), ThumbnailSize.LARGE))
                 .build();
+    }
+
+    private Artist convertToEntity(ArtistRequest artistRequest){
+        Image thumbnail = imageService.findByIdElseNull(artistRequest.getThumbnailId());
+        var types = artistTypeRepository.findAllById(artistRequest.getTypeIds());
+        return Artist
+                .builder()
+                .types(types)
+                .alias(artistRequest.getAlias())
+                .isIndie(artistRequest.getIsIndie())
+                .birthday(artistRequest.getBirthday())
+                .name(artistRequest.getName())
+                .description(artistRequest.getDescription())
+                .thumbnail(thumbnail)
+                .isOfficial(artistRequest.getIsOfficial())
+                .build();
+    }
+
+    private Artist findByIdElseThrow(UUID id){
+        return artistRepository.findById(id).orElseThrow(
+                () ->new ResourceNotFoundException("Artist","ID", id)
+        );
     }
 }

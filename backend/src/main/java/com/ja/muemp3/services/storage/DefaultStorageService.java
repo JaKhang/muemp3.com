@@ -3,6 +3,7 @@ package com.ja.muemp3.services.storage;
 import com.ja.muemp3.config.properties.StorageProperties;
 import com.ja.muemp3.entities.constants.StorageType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,9 +11,9 @@ import java.io.OutputStream;
 
 @Service
 @RequiredArgsConstructor
-public class DefaultStorageService implements StorageService{
+public class DefaultStorageService implements StorageService {
 
-    private final LocalFileService localFileService;
+    private final LocalStorageService localStorageService;
     private final GoogleDriveFile googleDriveFile;
     private final StorageProperties storageProperties;
 
@@ -20,8 +21,8 @@ public class DefaultStorageService implements StorageService{
     public String upload(StorageType storageType, MultipartFile file, String path, boolean isPublic) {
         if (storageType == null)
             storageType = StorageType.valueOf(storageProperties.getDefaultType());
-        if(StorageType.LOCAL.equals(storageType)){
-            return localFileService.store(path, file);
+        if (StorageType.LOCAL.equals(storageType)) {
+            return localStorageService.store(file, path);
         } else {
             return googleDriveFile.uploadFile(file, path, isPublic);
         }
@@ -40,6 +41,24 @@ public class DefaultStorageService implements StorageService{
 
     @Override
     public String getLinkByResource(String resource, StorageType storageType) {
-        return googleDriveFile.getThumbnailLink(resource);
+        if (storageType == null)
+            storageType = StorageType.valueOf(storageProperties.getDefaultType());
+        if (StorageType.LOCAL.equals(storageType)) {
+            return null;
+        } else {
+            return googleDriveFile.getThumbnailLink(resource);
+        }
+
+    }
+
+    @Override
+    public Resource loadResource(String resource, StorageType storageType) {
+        if(StorageType.LOCAL.equals(storageType)){
+            System.out.println(storageType);
+            return localStorageService.loadAsResource(resource);
+        } else {
+            return googleDriveFile.loadAsResource(resource);
+
+        }
     }
 }

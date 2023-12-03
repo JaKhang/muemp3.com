@@ -4,7 +4,9 @@ import com.ja.muemp3.config.properties.StorageProperties;
 import lombok.NonNull;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.FileUrlResource;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,18 +38,27 @@ public class DefaultLocalStorageService implements LocalStorageService {
 
     @Override
     public String store(@NonNull MultipartFile file, String path) {
+
+
+
         try {
             //check empty
             if (file.isEmpty()) throw new StorageException("File upload location can not be Empty.");
-            Path desFile = root.resolve(path)
+            Path desFile = root.toAbsolutePath()
+                    .resolve(path)
                     .resolve(Paths.get(file.getOriginalFilename()))
                     .normalize()
                     .toAbsolutePath();
 
+            System.out.println(desFile.toAbsolutePath());
+            System.out.println(root.toAbsolutePath().resolve("path"));
             // This is a security check
-            if (!desFile.getParent().equals(root.toAbsolutePath()))
+            if (!desFile.startsWith(root))
                 throw new StorageException("Cannot store file outside current directory.");
 
+            if(!desFile.getParent().toFile().exists()){
+                desFile.toFile().mkdirs();
+            }
             //store
             try (InputStream inputStream = file.getInputStream()) {
                 Files.copy(inputStream, desFile, StandardCopyOption.REPLACE_EXISTING);
@@ -74,8 +85,9 @@ public class DefaultLocalStorageService implements LocalStorageService {
     @Override
     public Resource load(String path) {
         try {
-            Path filePath = loadPath(path);
-            Resource resource = new FileSystemResource(filePath);
+            Path file = loadPath(path);
+            Resource resource = new UrlResource(file.toUri());
+            System.out.println(resource);
             if (resource.exists() || resource.isReadable())
                 return resource;
             else
@@ -112,13 +124,17 @@ public class DefaultLocalStorageService implements LocalStorageService {
 
     }
 
+    @Override
+    public Resource loadAsResource(String resource) {
+        return load(resource);
+    }
+
     /*------------------
           Private
     --------------------*/
-    private Path loadPath(String pathFile) {
-        Path path = root.resolve(pathFile);
-        if (!Files.exists(path))
-            throw new StorageFileNotFoundException("Could not read file: " + pathFile);
+    private Path loadPath(String... paths) {
+        Path path = root.resolve(Paths.get("", paths)).normalize().toAbsolutePath();
+
         return path;
     }
 }

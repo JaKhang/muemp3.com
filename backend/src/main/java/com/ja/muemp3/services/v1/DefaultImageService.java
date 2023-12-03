@@ -4,6 +4,7 @@ import com.ja.muemp3.entities.Image;
 import com.ja.muemp3.entities.constants.StorageType;
 import com.ja.muemp3.entities.domain.UrlMultipartFile;
 import com.ja.muemp3.exception.BadRequestException;
+import com.ja.muemp3.exception.ResourceNotFoundException;
 import com.ja.muemp3.repositories.ImageRepository;
 import com.ja.muemp3.services.ImageService;
 import com.ja.muemp3.services.storage.StorageService;
@@ -49,6 +50,13 @@ public class DefaultImageService implements ImageService {
         } catch (Exception e){
             throw new BadRequestException("");
         }
+    }
+
+    @Override
+    public Resource loadResourceById(UUID id) {
+        Image image = imageRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("image", "id", id));
+        System.out.println(image);
+        return storageService.loadResource(image.getResource(), image.getStorageType());
     }
 
 }

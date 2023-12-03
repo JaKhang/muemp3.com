@@ -26,6 +26,7 @@ public abstract class Auditable {
     @CreatedDate
     protected Timestamp createdAt;
 
+    @Column(columnDefinition = "boolean default false")
     protected Boolean deleted;
 }
 

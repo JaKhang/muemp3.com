@@ -1,6 +1,7 @@
 package com.ja.muemp3.services.storage;
 
 import com.ja.muemp3.entities.constants.StorageType;
+import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.OutputStream;
@@ -16,4 +17,6 @@ public interface StorageService {
     void downloadFile(StorageType storageType, String details, OutputStream outputStream);
 
     String getLinkByResource(String resource, StorageType storageType);
+
+    Resource loadResource(String resource, StorageType storageType);
 }

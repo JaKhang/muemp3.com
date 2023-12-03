@@ -13,12 +13,11 @@ import java.util.UUID;
 public class ArtistRequest {
     private String name;
     private String alias;
-    private Boolean isOfficial;
-    private Boolean isBand;
+    private Boolean isOfficial = false;
+    private Boolean isIndie = false;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthday;
     private String description;
-    private List<UUID> roleIds;
+    private List<UUID> typeIds;
     private UUID thumbnailId;
-
 }
