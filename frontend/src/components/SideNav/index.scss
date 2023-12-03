@@ -1,0 +1,155 @@
+@import "src/theme/root";
+@import "src/theme/functions";
+
+.sidenav {
+  $block: &;
+  grid-area: sidenav;
+  background-color: $white;
+  box-shadow: $shadows-gray-blue-30-3-5b;
+  overflow-x: hidden;
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: px-to-rem(12);
+    justify-content: flex-start;
+  }
+
+  &__container {
+    width: px-to-rem(260);
+    padding: px-to-rem(24) px-to-rem(16) !important;
+    transition: ease 0.5s;
+
+  }
+
+  &__header{
+    margin-bottom: spacing(5);
+  }
+
+
+  /*------------------
+          Item
+  --------------------*/
+
+  &__item {
+    border-radius: px-to-rem(5) !important;
+    background-color: transparent;
+    width: 100%;
+    color: $secondary-text;
+    padding: px-to-rem(8) px-to-rem(16) !important;
+
+    &-icon {
+      color: $gray-blue-85 !important;
+      width: px-to-rem(30);
+      height: px-to-rem(30);
+      display: grid !important;
+      place-items: center !important;
+      min-width: unset !important;
+      margin-right: spacing(3);
+
+    }
+
+    &-text {
+      font-feature-settings: 'clig' off, 'liga' off;
+      font-size: px-to-rem(14);
+      font-style: normal;
+      font-weight: 700;
+      line-height: 20px; /* 166.667% */
+      margin: 0 !important;
+      white-space: nowrap;
+
+    }
+  }
+
+  /*------------------
+          Logo
+  --------------------*/
+  &__logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: px-to-rem(12);
+
+    &-image {
+      width: px-to-rem(40);
+    }
+
+    &-text {
+      font-family: 'Pixelify Sans', cursive;
+      font-weight: bold;
+      font-size: 24px;
+      background: linear-gradient(to right, $purple 0%, $teal-blue 100%);
+      background-clip: text;
+      color: transparent;
+    }
+  }
+
+
+  /*------------------
+          Item active
+  --------------------*/
+  &__item--active {
+    background-color: $primary-color !important;
+    box-shadow: $shadows-purple-15-30b;
+
+
+    #{$block}__item-text {
+      color: $white !important;
+    }
+
+    #{$block}__item-icon {
+      color: $white !important;
+    }
+
+  }
+
+  &__collapse {
+
+    #{$block}__expand-icon {
+      color: $gray-blue-85 !important;
+    }
+
+  }
+
+  &__collapse--active {
+    #{$block}__collapse-text {
+      color: $primary-color !important;
+    }
+
+    #{$block}__collapse-icon {
+      color: $primary-color !important;
+    }
+
+    #{$block}__expand-icon {
+      color: $primary-color !important;
+    }
+
+  }
+}
+
+/*------------------
+        slim
+--------------------*/
+.sidenav.sidenav--slim {
+  .sidenav__container {
+    width: px-to-rem(94);
+  }
+
+  .sidenav__item {
+    &-text {
+      display: none !important;
+    }
+
+    .sidenav__expand-icon {
+      display: none !important;
+    }
+  }
+
+  .sidenav__logo{
+      &-text{
+        display: none;
+      }
+  }
+
+}
+
