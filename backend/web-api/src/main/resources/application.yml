@@ -1,0 +1,144 @@
+spring:
+    datasource:
+        password: mysql
+        url: jdbc:mysql://localhost:3306/muemp3_data?useSSL=false&allowPublicKeyRetrieval=true
+        username: root
+    jpa:
+        database-platform: org.hibernate.dialect.MySQLDialect
+        hibernate:
+            ddl-auto: update
+        show-sql: true
+        properties:
+            hibernate:
+                format_sql: true
+    security:
+        oauth2:
+            client:
+                registration:
+                    google:
+                        client-id: 311235905390-4drkukl7kdn1o2ic762e0b2urg0mga0m.apps.googleusercontent.com
+                        client-secret: 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
+                        redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
+                        scope:
+                            - email
+                            - profile
+                    facebook:
+                        clientId: 981226833189222
+                        clientSecret: 4a84972c2615106d91cde2ccb2148cf0
+                        redirectUri: "{baseUrl}/oauth2/callback/{registrationId}" # Note that facebook now mandates the use of https redirect URIs, so make sure your app supports https in production
+                        scope:
+                            - email
+                            - public_profile
+    main:
+        allow-bean-definition-overriding: true
+    servlet:
+        multipart:
+            max-request-size: 20MB
+            max-file-size: 20MB
+            enabled: true
+security:
+    jwt:
+        expired-time: 24
+        secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+    oauth2:
+        success-redirect-uris: ${web.domain.web}/oauth2/redirect
+        failed-redirect-uris: ${web.domain.web}/oauth2/redirect
+
+storage:
+    default-type: GOOGLE_DRIVE
+    google-drive:
+        root: muemp3.com
+        application-name: Mue Mp3
+        credential-file-path: /keys/credentials.json
+        token-directory-path: tokens
+    local:
+        root-dir: D:/Workspace/full-stack/muemp3.com/storage/
+        trash-dir: D:/Workspace/full-stack/muemp3.com/storage/trash/
+        thumbnail-dir: D:/Workspace/full-stack/muemp3.com/storage/thumbnail/
+    thumbnail-size: 300
+hls:
+    root:  D:/Workspace/full-stack/muemp3.com/storage/hls
+    time: 10
+    segment-filename: index-%02d.aac
+    filename: index.m3u8
+web:
+    cors:
+        allowed-origins:
+    domain:
+        media: "${web.domain.api}/content"
+        web: "http://192.168.1.42"
+        api: "http://192.168.1.42:8080"
+        hls: "${web.domain.api}/content/hls"
+
+#spring:
+#    datasource:
+#        password: t7ZARJAAF7PLR3wx
+#        url: jdbc:mysql://localhost:3306/muemp3_data?useSSL=false&allowPublicKeyRetrieval=true
+#        username: muemp3_data
+#    jpa:
+#        database-platform: org.hibernate.dialect.MySQLDialect
+#        hibernate:
+#            ddl-auto: none
+#        show-sql: true
+#        properties:
+#            hibernate:
+#                format_sql: true
+#    security:
+#        oauth2:
+#            client:
+#                registration:
+#                    google:
+#                        client-id: 311235905390-4drkukl7kdn1o2ic762e0b2urg0mga0m.apps.googleusercontent.com
+#                        client-secret: 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
+#                        redirectUri: "{baseUrl}/oauth2/callback/{registrationId}"
+#                        scope:
+#                            - email
+#                            - profile
+#                    facebook:
+#                        clientId: 981226833189222
+#                        clientSecret: 4a84972c2615106d91cde2ccb2148cf0
+#                        redirectUri: "{baseUrl}/oauth2/callback/{registrationId}" # Note that facebook now mandates the use of https redirect URIs, so make sure your app supports https in production
+#                        scope:
+#                            - email
+#                            - public_profile
+#    main:
+#        allow-bean-definition-overriding: true
+#    servlet:
+#        multipart:
+#            max-request-size: 20MB
+#            max-file-size: 20MB
+#security:
+#    jwt:
+#        expired-time: 24
+#        secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+#    oauth2:
+#        success-redirect-uris: ${web.domain.web}/oauth2/redirect
+#        failed-redirect-uris: ${web.domain.web}/oauth2/redirect
+#
+#storage:
+#    default-type: GOOGLE_DRIVE
+#    google-drive:
+#        root: muemp3.com
+#        application-name: Mue Mp3
+#        credential-file-path: /keys/credentials.json
+#        token-directory-path: tokens
+#    local:
+#        root-dir: /www/storage/root/
+#        trash-dir: /www/storage/root/trash/
+#        thumbnail-dir: /www/storage/root/thumbnail/
+#    thumbnail-size: 300
+#hls:
+#    root:  /www/storage/hls/
+#    time: 10
+#    segment-filename: index-%02d.aac
+#    filename: index.m3u8
+#web:
+#    cors:
+#        allowed-origins:
+#            - /**
+#            - http://localhost
+#    domain:
+#        media: "https://media.muemp3.site"
+#        web: "https://muemp3.site"
+#        api: "https://service.muemp3.site"
+#        hls: "https://streaming.muemp3.site"

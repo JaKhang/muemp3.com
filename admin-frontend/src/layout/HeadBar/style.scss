@@ -1,0 +1,25 @@
+
+.head-bar{
+    &__wrapper{
+        grid-area: head-bar;
+        padding: 0px;
+        padding-left: 12px;
+        padding-right: 24px;
+        background-color: var(--mui-palette-common-background);
+        transition: width 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms, margin 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;
+        border-bottom: 1px solid var(--mui-palette-secondary-200);
+    }
+
+    &__inner{
+        height: 60px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &__group{
+        display: flex;
+        gap: 4px;
+        align-items: center;
+    }
+}
