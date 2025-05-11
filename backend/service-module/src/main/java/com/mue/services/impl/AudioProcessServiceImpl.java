@@ -91,7 +91,7 @@ public class AudioProcessServiceImpl implements AudioProcessService {
             if (process.waitFor() != 0) {
                 throw new RuntimeException("");
             }
-            logger.info("Already process " + bitrate);
+            logger.info("Already process {}", bitrate);
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }

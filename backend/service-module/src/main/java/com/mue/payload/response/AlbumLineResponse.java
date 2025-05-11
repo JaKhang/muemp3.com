@@ -14,7 +14,7 @@ public class AlbumLineResponse {
     private UUID id;
     private String name;
     private String alias;
-    private AlbumType type;
+    private AlbumType albumType;
     private String thumbnail;
     private Collection<ObjectResponse> artists;
     private Collection<ObjectResponse> genres;

@@ -25,7 +25,8 @@ public class AuthApi {
     private final AuthService authService;
 
     @PostMapping
-    public ResponseEntity<?> authenticate(@RequestBody @Valid LoginRequest loginRequest) {
+    public ResponseEntity<?> authenticate(@RequestBody LoginRequest loginRequest) {
+        System.out.println(loginRequest);
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getEmail(),

@@ -19,7 +19,6 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
-@RestControllerAdvice
 public class ExceptionHandler extends ResponseEntityExceptionHandler {
 
     private static final String DESCRIPTION_TEMPLATE = "Exception class: %s -- Request path: %s";

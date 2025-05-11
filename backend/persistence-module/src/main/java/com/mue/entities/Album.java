@@ -22,9 +22,6 @@ import java.util.UUID;
 @SQLRestriction("deleted <> true")
 public class Album extends AbstractEntity {
 
-    /*------------------
-          Attributes
-    --------------------*/
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;

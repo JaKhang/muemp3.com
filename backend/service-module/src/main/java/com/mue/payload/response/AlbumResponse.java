@@ -18,7 +18,7 @@ public class AlbumResponse {
     private String shortDescription;
     private String thumbnail;
     private ImageResponse image;
-    private AlbumType type;
+    private AlbumType albumType;
     private Timestamp createdAt;
     private Timestamp lastModifiedAt;
     private ObjectResponse distributor;
